@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Story App</string>
+    <string name="enter_password">Enter password</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="welcome">Welcome</string>
+    <string name="login">Login</string>
+    <string name="forget_password">Forget password?</string>
 </resources>

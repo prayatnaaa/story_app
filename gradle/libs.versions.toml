@@ -1,13 +1,13 @@
 [versions]
 activityKtx = "1.9.3"
 agp = "8.7.2"
-androidAsyncHttp = "1.0.0"
+androidAsyncHttp = "1.4.11"
 converterGson = "2.9.0"
 datastorePreferences = "1.1.1"
 fragmentKtx = "1.8.5"
 glide = "4.16.0"
 kotlin = "1.9.24"
-coreKtx = "1.15.0"
+coreKtx = "1.13.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -24,11 +24,11 @@ retrofit = "2.9.0"
 roomCompiler = "2.6.1"
 roomKtx = "2.6.1"
 roomRuntime = "2.6.1"
-workRuntime = "2.10.0"
+workRuntime = "2.7.1"
 
 [libraries]
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
-android-async-http = { module = "com.github.kittinan:android-async-http", version.ref = "androidAsyncHttp" }
+android-async-http = { module = "com.loopj.android:android-async-http", version.ref = "androidAsyncHttp" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }

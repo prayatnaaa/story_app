@@ -5,6 +5,76 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.auth.login.LoginActivity">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvWelcome"
+        android:text="@string/welcome"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/emailInputConstraint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvWelcome"
+        >
+
+        <include
+            android:id="@+id/emailInput"
+            layout="@layout/email_input" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/passwordInputConstraint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@id/emailInputConstraint"
+        app:layout_constraintStart_toStartOf="@id/emailInputConstraint"
+        app:layout_constraintTop_toBottomOf="@+id/emailInputConstraint">
+
+        <include
+            android:id="@+id/passwordInput"
+            layout="@layout/password_input" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvForgetPassword"
+        android:gravity="end"
+        android:layout_marginTop="4dp"
+        android:text="@string/forget_password"
+        app:layout_constraintEnd_toEndOf="@id/passwordInputConstraint"
+        app:layout_constraintStart_toStartOf="@id/passwordInputConstraint"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputConstraint"
+        />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintEnd_toEndOf="@id/passwordInputConstraint"
+        app:layout_constraintStart_toStartOf="@+id/passwordInputConstraint"
+        android:text="@string/login"
+        app:layout_constraintTop_toBottomOf="@+id/tvForgetPassword"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
