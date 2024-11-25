@@ -1,6 +1,7 @@
 package com.prayatna.storyapp.data.pref
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -18,8 +19,8 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
     fun getSession(): Flow<UserModel> {
         return dataStore.data.map { preferences ->
             UserModel(
-                preferences[EMAIL_KEY] ?: "",
-                preferences[PASSWORD_KEY] ?: "",
+                preferences[ID_KEY] ?: "",
+                preferences[USERNAME_KEY] ?: "",
                 preferences[TOKEN_KEY] ?: "",
                 preferences[IS_LOGIN_KEY] ?: false
             )
@@ -28,11 +29,15 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
 
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
-            preferences[EMAIL_KEY] = user.email
-            preferences[PASSWORD_KEY] = user.password
-            preferences[TOKEN_KEY] = user.token
-            preferences[IS_LOGIN_KEY] = true
+            preferences[ID_KEY] = user.userId!!
+            preferences[USERNAME_KEY] = user.userName!!
+            preferences[TOKEN_KEY] = user.token!!
+            preferences[IS_LOGIN_KEY] = user.isLogin
         }
+        Log.d(
+            "TokenLogin",
+            "isLogin: ${user.isLogin}; email: ${user.userId}; password: ${user.userName}; token: ${user.token}"
+        )
     }
 
     suspend fun logout() {
@@ -45,8 +50,8 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
         @Volatile
         private var INSTANCE: UserPreference? = null
 
-        private val EMAIL_KEY = stringPreferencesKey("email")
-        private val PASSWORD_KEY = stringPreferencesKey("password")
+        private val ID_KEY = stringPreferencesKey("id")
+        private val USERNAME_KEY = stringPreferencesKey("password")
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 

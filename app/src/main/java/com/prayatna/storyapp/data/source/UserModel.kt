@@ -1,8 +1,8 @@
 package com.prayatna.storyapp.data.source
 
 data class UserModel(
-    val email: String,
-    val password: String,
-    val token: String,
+    val userId: String? = null,
+    val userName: String? = null,
+    val token: String? = null,
     val isLogin: Boolean = false
 )

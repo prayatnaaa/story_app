@@ -26,12 +26,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
+        setupAction()
         viewModel.getSession().observe(this) { user->
             if (!user.isLogin) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
+        }
+    }
+
+    private fun setupAction() {
+        binding.btnLogout.setOnClickListener {
+            viewModel.logout()
         }
     }
 
