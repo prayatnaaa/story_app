@@ -7,14 +7,17 @@ import android.view.WindowInsets
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.prayatna.storyapp.R
 import com.prayatna.storyapp.databinding.ActivityMainBinding
-import com.prayatna.storyapp.ui.ViewModelFactory
+import com.prayatna.storyapp.ui.UserViewModelFactory
 import com.prayatna.storyapp.ui.auth.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
+        UserViewModelFactory.getInstance(this)
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -26,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
-        setupAction()
+        setBottomNavigation()
         viewModel.getSession().observe(this) { user->
             if (!user.isLogin) {
                 val intent = Intent(this, LoginActivity::class.java)
@@ -36,10 +39,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAction() {
-        binding.btnLogout.setOnClickListener {
-            viewModel.logout()
-        }
+    private fun setBottomNavigation() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNav.setupWithNavController(navController)
     }
 
     @Suppress("DEPRECATION")

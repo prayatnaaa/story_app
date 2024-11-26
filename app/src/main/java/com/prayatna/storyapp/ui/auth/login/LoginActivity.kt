@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.prayatna.storyapp.data.source.UserModel
 import com.prayatna.storyapp.databinding.ActivityLoginBinding
 import com.prayatna.storyapp.helper.Result
-import com.prayatna.storyapp.ui.ViewModelFactory
+import com.prayatna.storyapp.ui.UserViewModelFactory
 import com.prayatna.storyapp.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this)
+        UserViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

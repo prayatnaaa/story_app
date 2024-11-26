@@ -8,16 +8,16 @@ import com.prayatna.storyapp.data.repository.UserRepository
 import com.prayatna.storyapp.ui.auth.login.LoginViewModel
 import com.prayatna.storyapp.ui.main.MainViewModel
 
-class ViewModelFactory private constructor(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory(){
+class UserViewModelFactory private constructor(private val userRepository: UserRepository) : ViewModelProvider.NewInstanceFactory(){
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when{
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(repository) as T
+                LoginViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(repository) as T
+                MainViewModel(userRepository) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
@@ -27,10 +27,10 @@ class ViewModelFactory private constructor(private val repository: UserRepositor
 
     companion object {
         @Volatile
-        private var INSTANCE: ViewModelFactory? = null
-        fun getInstance(context: Context) : ViewModelFactory {
+        private var INSTANCE: UserViewModelFactory? = null
+        fun getInstance(context: Context) : UserViewModelFactory {
             return INSTANCE ?: synchronized(this){
-                val instance = ViewModelFactory(Injection.getInstance(context))
+                val instance = UserViewModelFactory(Injection.getInstance(context))
                 INSTANCE = instance
                 instance
             }

@@ -7,4 +7,11 @@
     <string name="login">Login</string>
     <string name="forget_password">Forget password?</string>
     <string name="logout">Logout</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="username">Tude Prayatna</string>
+    <string name="userEmail">tude@gmail.com</string>
+    <string name="general">General\n</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>
