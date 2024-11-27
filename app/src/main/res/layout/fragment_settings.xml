@@ -33,6 +33,7 @@
         style="?attr/buttonBarNegativeButtonStyle"
         android:layout_marginEnd="16dp"
         android:text="@string/logout"
+        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"

@@ -5,20 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.prayatna.storyapp.data.di.Injection
 import com.prayatna.storyapp.data.repository.UserRepository
-import com.prayatna.storyapp.ui.auth.login.LoginViewModel
-import com.prayatna.storyapp.ui.main.MainViewModel
+import com.prayatna.storyapp.ui.user.UserViewModel
 
-class UserViewModelFactory private constructor(private val userRepository: UserRepository) : ViewModelProvider.NewInstanceFactory(){
+class UserViewModelFactory private constructor(private val userRepository: UserRepository): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return when{
-            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(userRepository) as T
+        return when {
+            modelClass.isAssignableFrom(UserViewModel::class.java) -> {
+             UserViewModel(userRepository) as T
             }
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(userRepository) as T
-            }
+
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
             }
@@ -28,9 +25,9 @@ class UserViewModelFactory private constructor(private val userRepository: UserR
     companion object {
         @Volatile
         private var INSTANCE: UserViewModelFactory? = null
-        fun getInstance(context: Context) : UserViewModelFactory {
-            return INSTANCE ?: synchronized(this){
-                val instance = UserViewModelFactory(Injection.getInstance(context))
+        fun getInstance(context: Context): UserViewModelFactory {
+            return INSTANCE ?: synchronized(this) {
+                val instance = UserViewModelFactory(Injection.storyRepoInstance(context))
                 INSTANCE = instance
                 instance
             }

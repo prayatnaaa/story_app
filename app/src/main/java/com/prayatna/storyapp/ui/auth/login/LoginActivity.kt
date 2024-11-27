@@ -11,7 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.prayatna.storyapp.data.source.UserModel
 import com.prayatna.storyapp.databinding.ActivityLoginBinding
 import com.prayatna.storyapp.helper.Result
-import com.prayatna.storyapp.ui.UserViewModelFactory
+import com.prayatna.storyapp.ui.AuthViewModelFactory
+import com.prayatna.storyapp.ui.auth.register.RegisterActivity
 import com.prayatna.storyapp.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<LoginViewModel> {
-        UserViewModelFactory.getInstance(this)
+        AuthViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,11 +52,11 @@ class LoginActivity : AppCompatActivity() {
                     )
                     viewModel.saveSession(user)
                     startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }
 
                 is Result.Error -> {
                     showLoading(false)
-
                 }
             }
         }
@@ -85,6 +86,10 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.btnLogin.setOnClickListener {
             goLogin()
+        }
+        binding.btnHasNoAccount.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+            finish()
         }
     }
 

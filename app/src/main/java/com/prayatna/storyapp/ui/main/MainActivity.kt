@@ -11,13 +11,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.prayatna.storyapp.R
 import com.prayatna.storyapp.databinding.ActivityMainBinding
-import com.prayatna.storyapp.ui.UserViewModelFactory
+import com.prayatna.storyapp.ui.AuthViewModelFactory
 import com.prayatna.storyapp.ui.auth.login.LoginActivity
+import com.prayatna.storyapp.ui.user.story.StoryUploadActivity
 
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel> {
-        UserViewModelFactory.getInstance(this)
+        AuthViewModelFactory.getInstance(this)
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -30,12 +31,20 @@ class MainActivity : AppCompatActivity() {
 
         setupView()
         setBottomNavigation()
+        setupAction()
         viewModel.getSession().observe(this) { user->
             if (!user.isLogin) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
+        }
+    }
+
+    private fun setupAction() {
+        binding.addStoryButton.setOnClickListener {
+            val intent = Intent(this, StoryUploadActivity::class.java)
+            startActivity(intent)
         }
     }
 

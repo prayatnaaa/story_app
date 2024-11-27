@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.user.story.StoryUploadActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/main">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/blurredBackground"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:src="@drawable/ic_gallery"
+            android:id="@+id/cameraResultImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0" />
+
+        <ImageView
+            android:id="@+id/openGallery"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_gallery"
+            app:layout_constraintBottom_toBottomOf="@+id/openCamera"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintEnd_toStartOf="@+id/openCamera"
+            app:layout_constraintTop_toBottomOf="@+id/cameraResultImage" />
+
+        <ImageView
+            android:id="@+id/openCamera"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_camera"
+            app:layout_constraintTop_toBottomOf="@+id/cameraResultImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" />
+
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_your_title_here"
+            android:background="@drawable/box_background"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/openGallery"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="top|start"
+            android:layout_marginVertical="8dp"
+            android:maxLines="2"
+            android:layout_marginHorizontal="16dp"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:imeOptions="actionDone"
+            />
+
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTitle"
+            app:layout_constraintBottom_toTopOf="@+id/btnUpload"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="@string/enter_your_description_here"
+            android:background="@drawable/box_background"
+            android:padding="16dp"
+            android:gravity="top|start"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:imeOptions="actionDone"
+            android:minHeight="100dp"
+            android:maxHeight="150dp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnUpload"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/upload" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

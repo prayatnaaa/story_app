@@ -5,6 +5,7 @@ import com.prayatna.storyapp.data.remote.response.GetDetailStoryResponse
 import com.prayatna.storyapp.data.remote.response.GetStoryResponse
 import com.prayatna.storyapp.data.remote.response.LoginResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -39,22 +40,15 @@ interface ApiService {
         @Query("location") location: String,
     ): GetStoryResponse
 
-    @GET("stories/:id")
+    @GET("stories/{id}")
     suspend fun getDetailStoryById(
         @Path("id") id: String,
     ) : GetDetailStoryResponse
 
     @Multipart
     @POST("stories")
-    fun addStory(
+    suspend fun addStory(
         @Part file: MultipartBody.Part,
-        @Part("description") description: String,
-    ) : AddResponse
-
-    @Multipart
-    @POST("stories/guest")
-    fun addGuestStory(
-        @Part file: MultipartBody.Part,
-        @Part("description") description: String
+        @Part("description") description: RequestBody,
     ) : AddResponse
 }

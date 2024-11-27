@@ -14,4 +14,16 @@
     <string name="general">General\n</string>
     <string name="choose_language">Choose Language</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="confirmation_message">Are you sure?</string>
+    <string name="yes">Yeah</string>
+    <string name="no">Nah</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_your_description_here">Enter your description here...</string>
+    <string name="upload">Upload</string>
+    <string name="enter_your_title_here">Enter your title here...</string>
+    <string name="back">Back</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="has_account">Already have account?</string>
+    <string name="has_no_account">Register</string>
 </resources>

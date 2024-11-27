@@ -2,10 +2,12 @@
 activityKtx = "1.9.3"
 agp = "8.7.2"
 androidAsyncHttp = "1.4.11"
+cameraCore = "1.4.0"
 converterGson = "2.9.0"
 datastorePreferences = "1.1.1"
 fragmentKtx = "1.8.5"
 glide = "4.16.0"
+glideTransformationsVersion = "4.3.0"
 kotlin = "1.9.24"
 coreKtx = "1.13.0"
 junit = "4.13.2"
@@ -28,10 +30,18 @@ workRuntime = "2.7.1"
 legacySupportV4 = "1.0.0"
 navigationFragmentKtx = "2.8.4"
 navigationUiKtx = "2.8.4"
+exifinterface = "1.3.7"
 
 [libraries]
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 android-async-http = { module = "com.loopj.android:android-async-http", version.ref = "androidAsyncHttp" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
+androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraCore" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraCore" }
+androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraCore" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
@@ -57,6 +67,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+wasabeef-glide-transformations = { module = "jp.wasabeef:glide-transformations", version.ref = "glideTransformationsVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

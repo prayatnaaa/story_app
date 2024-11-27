@@ -1,4 +1,4 @@
-package com.prayatna.storyapp.ui.home
+package com.prayatna.storyapp.ui.user.home
 
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prayatna.storyapp.databinding.FragmentHomeBinding
 import com.prayatna.storyapp.helper.Result
-import com.prayatna.storyapp.ui.StoryViewModelFactory
+import com.prayatna.storyapp.ui.UserViewModelFactory
 import com.prayatna.storyapp.ui.adapter.HomeAdapter
+import com.prayatna.storyapp.ui.user.UserViewModel
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by viewModels{
-        StoryViewModelFactory.getInstance(requireContext())
+    private val viewModel: UserViewModel by viewModels{
+        UserViewModelFactory.getInstance(requireContext())
     }
 
     private var adapter: HomeAdapter? = null
@@ -68,5 +69,10 @@ class HomeFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
