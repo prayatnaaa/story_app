@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvEmail"
         app:startIconDrawable="@drawable/ic_email">
 
-        <com.prayatna.storyapp.helper.customView.EmailEditText
+        <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

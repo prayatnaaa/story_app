@@ -9,7 +9,7 @@ import com.prayatna.storyapp.data.repository.AuthRepository
 import com.prayatna.storyapp.helper.Result
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
+class RegisterViewModel(private val repository: AuthRepository): ViewModel() {
 
     private var _register = MutableLiveData<Result<AddResponse>>()
     val register: LiveData<Result<AddResponse>> = _register
@@ -20,4 +20,5 @@ class RegisterViewModel(private val repository: AuthRepository) : ViewModel() {
             _register.value = repository.register(name, email, password)
         }
     }
+
 }

@@ -1,14 +1,14 @@
-package com.prayatna.storyapp.ui.home
+package com.prayatna.storyapp.ui.user.home
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.prayatna.storyapp.databinding.ActivityDetailBinding
 import com.prayatna.storyapp.helper.Result
 import com.prayatna.storyapp.ui.UserViewModelFactory
+import com.prayatna.storyapp.ui.user.UserViewModel
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 class DetailActivity : AppCompatActivity() {
@@ -34,16 +34,14 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getDetailStoryById(id).observe(this) { result ->
                 when (result) {
                     is Result.Error -> {
-                        showLoading(false)
-                        showToast(result.error)
+                        Log.e("DetailActivity", result.error)
                     }
 
                     is Result.Loading -> {
-                        showLoading(true)
+                        Log.d("DetailActivity", "Loading")
                     }
 
                     is Result.Success -> {
-                        showLoading(false)
                         val data = result.data.story!!
                         binding.tvTitle.text = data.name
                         binding.tvDescription.text = data.description
@@ -56,18 +54,6 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

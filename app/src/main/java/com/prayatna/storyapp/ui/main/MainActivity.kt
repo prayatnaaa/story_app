@@ -13,7 +13,7 @@ import com.prayatna.storyapp.R
 import com.prayatna.storyapp.databinding.ActivityMainBinding
 import com.prayatna.storyapp.ui.AuthViewModelFactory
 import com.prayatna.storyapp.ui.auth.login.LoginActivity
-import com.prayatna.storyapp.ui.story.StoryUploadActivity
+import com.prayatna.storyapp.ui.user.story.StoryUploadActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,11 +32,7 @@ class MainActivity : AppCompatActivity() {
         setupView()
         setBottomNavigation()
         setupAction()
-        setupSession()
-    }
-
-    private fun setupSession() {
-        viewModel.getSession().observe(this) { user ->
+        viewModel.getSession().observe(this) { user->
             if (!user.isLogin) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
@@ -53,8 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setBottomNavigation() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNav.setupWithNavController(navController)
     }

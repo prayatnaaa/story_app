@@ -1,4 +1,4 @@
-package com.prayatna.storyapp.ui.home
+package com.prayatna.storyapp.ui.user
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +19,7 @@ class UserViewModel(private var repository: UserRepository) : ViewModel() {
     fun getStories(location: String) = repository.getStories(location)
     fun getDetailStoryById(id: String) = repository.getDetailStoryById(id)
     fun addStory(image: File, description: String) {
-        viewModelScope.launch {
+        viewModelScope.launch{
             _story.value = repository.addStory(image, description)
         }
     }

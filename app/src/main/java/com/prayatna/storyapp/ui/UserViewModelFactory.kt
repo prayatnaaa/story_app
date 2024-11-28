@@ -5,17 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.prayatna.storyapp.data.di.Injection
 import com.prayatna.storyapp.data.repository.UserRepository
-import com.prayatna.storyapp.ui.home.UserViewModel
+import com.prayatna.storyapp.ui.user.UserViewModel
 
-class UserViewModelFactory private constructor(private val userRepository: UserRepository) :
-    ViewModelProvider.NewInstanceFactory() {
+class UserViewModelFactory private constructor(private val userRepository: UserRepository): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(UserViewModel::class.java) -> {
-                UserViewModel(userRepository) as T
+             UserViewModel(userRepository) as T
             }
+
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
             }

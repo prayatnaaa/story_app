@@ -6,23 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
 
+    <Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:title="@string/settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="@string/username"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
 
     <Button
         android:id="@+id/btnLogout"
-        style="?attr/buttonBarNegativeButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="?attr/buttonBarNegativeButtonStyle"
         android:layout_marginEnd="16dp"
         android:text="@string/logout"
         android:textColor="@color/red"
@@ -63,15 +71,14 @@
         app:layout_constraintStart_toStartOf="@+id/tvGeneral"
         app:layout_constraintTop_toBottomOf="@+id/tvGeneral" />
 
-    <ImageView
-        android:id="@+id/settingsLocale"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_arrow_right"
-        app:layout_constraintBottom_toBottomOf="@+id/tvLanguage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toEndOf="@+id/tvLanguage"
-        app:layout_constraintTop_toTopOf="@+id/tvLanguage" />
+    <TextView
+        android:id="@+id/tvTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/dark_mode"
+        app:layout_constraintStart_toStartOf="@+id/tvLanguage"
+        app:layout_constraintTop_toBottomOf="@+id/tvLanguage" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

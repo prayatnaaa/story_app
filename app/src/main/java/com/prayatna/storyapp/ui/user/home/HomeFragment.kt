@@ -1,6 +1,7 @@
-package com.prayatna.storyapp.ui.home
+package com.prayatna.storyapp.ui.user.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.prayatna.storyapp.databinding.FragmentHomeBinding
 import com.prayatna.storyapp.helper.Result
 import com.prayatna.storyapp.ui.UserViewModelFactory
 import com.prayatna.storyapp.ui.adapter.HomeAdapter
+import com.prayatna.storyapp.ui.user.UserViewModel
 
 class HomeFragment : Fragment() {
 
@@ -44,14 +46,17 @@ class HomeFragment : Fragment() {
                 when (stories) {
                     is Result.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
+                        Log.d("HomeFragment", "Loading")
                     }
 
                     is Result.Error -> {
                         binding.progressBar.visibility = View.GONE
+                        Log.e("HomeFragment", stories.error)
                     }
                     is Result.Success -> {
                         binding.progressBar.visibility = View.GONE
                         val data = stories.data.listStory
+                        Log.d("HomeFragment", data.toString())
                         adapter?.submitList(data)
                     }
                 }
@@ -69,10 +74,5 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setupAction()
     }
 }

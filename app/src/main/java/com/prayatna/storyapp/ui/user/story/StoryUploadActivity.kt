@@ -1,14 +1,12 @@
-package com.prayatna.storyapp.ui.story
+package com.prayatna.storyapp.ui.user.story
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,8 +22,8 @@ import com.prayatna.storyapp.helper.Result
 import com.prayatna.storyapp.helper.reduceFileImage
 import com.prayatna.storyapp.helper.uriToFile
 import com.prayatna.storyapp.ui.UserViewModelFactory
-import com.prayatna.storyapp.ui.home.UserViewModel
-import com.prayatna.storyapp.ui.story.CameraActivity.Companion.CAMERAX_RESULT
+import com.prayatna.storyapp.ui.user.UserViewModel
+import com.prayatna.storyapp.ui.user.story.CameraActivity.Companion.CAMERAX_RESULT
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 class StoryUploadActivity : AppCompatActivity() {
@@ -66,7 +64,7 @@ class StoryUploadActivity : AppCompatActivity() {
 
         setupAction()
         setupUI()
-        setupViewModel()
+        setupObserver()
         setupGalleryFromCameraResult()
     }
 
@@ -77,44 +75,20 @@ class StoryUploadActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupViewModel() {
+    private fun setupObserver() {
         viewModel.story.observe(this) { result ->
             if (result != null) {
                 when(result) {
-                    is Result.Loading -> {
-                        showLoading(true)
-                    }
+                    is Result.Loading -> { Log.d("StoryUploadActivity", "Loading")}
                     is Result.Error -> {
-                        showLoading(false)
-                        showAlert(getString(R.string.fail), result.error)
+                        Log.d("StoryUploadActivity", result.error)
                     }
                     is Result.Success -> {
-                        showLoading(false)
-                        showToast(result.data.message)
-                        finish()
+                        Log.d("StoryUploadActivity", "${result.data.message}: ${result.data.error}")
                     }
                 }
             }
 
-        }
-    }
-
-    private fun showToast(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showAlert(messageTitle: String, message: String) {
-        AlertDialog.Builder(this).apply {
-            setTitle(messageTitle)
-            setMessage(message)
-        }.setNegativeButton(getString(R.string.okay)) { _, _ -> }.show()
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
         }
     }
 

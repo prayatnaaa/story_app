@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.prayatna.storyapp.data.remote.response.ListStory
 import com.prayatna.storyapp.databinding.StoryItemBinding
 import com.prayatna.storyapp.helper.StoryDiffCallback
-import com.prayatna.storyapp.ui.home.DetailActivity
+import com.prayatna.storyapp.ui.user.home.DetailActivity
 
 class HomeAdapter : ListAdapter<ListStory, HomeAdapter.ViewHolder>(StoryDiffCallback) {
     class ViewHolder(private val binding: StoryItemBinding) :

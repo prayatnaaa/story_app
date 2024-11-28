@@ -1,13 +1,17 @@
-package com.prayatna.storyapp.ui.story
+package com.prayatna.storyapp.ui.user.story
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.OrientationEventListener
 import android.view.Surface
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -40,6 +44,24 @@ class CameraActivity : AppCompatActivity() {
         }
         binding.capturePicture.setOnClickListener { takePhoto() }
         binding.btnCancel.setOnClickListener { finish() }
+        binding.openGallery.setOnClickListener { openGallery() }
+    }
+
+    private fun openGallery() {
+        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private val launcherGallery = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            val intent = Intent()
+            intent.putExtra(RESULT_FROM_CAMERA_GALLERY, uri.toString())
+            Log.d("ImageUri", "CameraActivity: uri: $uri")
+            finish()
+        } else {
+            Log.d("Photo Picker", "No media selected")
+        }
     }
 
     public override fun onResume() {
