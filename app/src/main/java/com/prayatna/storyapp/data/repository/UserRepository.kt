@@ -1,6 +1,5 @@
 package com.prayatna.storyapp.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.gson.Gson
@@ -24,16 +23,13 @@ class UserRepository private constructor(private val apiService: ApiService) {
             emit(Result.Loading)
             try {
                 val getStories = apiService.getStories(location)
-                Log.d("StoryList", getStories.toString())
                 emit(Result.Success(getStories))
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-                Log.e("LoginError", "login: $errorMessage")
                 emit(Result.Error(errorMessage!!))
             } catch (e: Exception) {
-                Log.e("LoginError", "login: ${e.message}")
                 emit(Result.Error(e.message.toString()))
             }
         }
@@ -48,10 +44,8 @@ class UserRepository private constructor(private val apiService: ApiService) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
-                Log.e("LoginError", "login: $errorMessage")
                 Result.Error(errorMessage!!)
             } catch (e: Exception) {
-                Log.e("LoginError", "login: ${e.message}")
                 emit(Result.Error(e.message.toString()))
             }
         }
@@ -72,10 +66,8 @@ class UserRepository private constructor(private val apiService: ApiService) {
             val jsonInString = e.response()?.errorBody()?.string()
             val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
             val errorMessage = errorBody.message
-            Log.e("LoginError", "login: $errorMessage")
             Result.Error(errorMessage!!)
         } catch (e: Exception) {
-            Log.e("LoginError", "login: ${e.message}")
             Result.Error(e.message.toString())
         }
     }

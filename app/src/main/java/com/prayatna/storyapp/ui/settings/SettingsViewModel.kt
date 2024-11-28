@@ -14,7 +14,7 @@ class SettingsViewModel(private val authRepository: AuthRepository) : ViewModel(
 
     fun logout() {
         viewModelScope.launch {
-        authRepository.logout()
+            authRepository.logout()
         }
     }
 }

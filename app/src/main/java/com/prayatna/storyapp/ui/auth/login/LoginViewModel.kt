@@ -10,7 +10,7 @@ import com.prayatna.storyapp.data.source.UserModel
 import com.prayatna.storyapp.helper.Result
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val repository: AuthRepository): ViewModel() {
+class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
 
     private var _login = MutableLiveData<Result<LoginResponse>>()
     val login: LiveData<Result<LoginResponse>> = _login

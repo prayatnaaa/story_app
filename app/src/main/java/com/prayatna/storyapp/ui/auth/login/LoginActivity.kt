@@ -1,11 +1,13 @@
 package com.prayatna.storyapp.ui.auth.login
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.prayatna.storyapp.data.source.UserModel
@@ -32,7 +34,16 @@ class LoginActivity : AppCompatActivity() {
         setupAction()
         setupView()
         setupResult()
+        setupAnimation()
 
+    }
+
+    private fun setupAnimation() {
+        ObjectAnimator.ofFloat(binding.tvWelcome, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 
     private fun setupResult() {
@@ -41,13 +52,14 @@ class LoginActivity : AppCompatActivity() {
                 is Result.Loading -> {
                     showLoading(true)
                 }
+
                 is Result.Success -> {
                     showLoading(false)
-                    val data = result.data.loginResult!!
+                    val data = result.data.loginResult
                     val user = UserModel(
-                        userId = data.userId,
-                        userName = data.name,
-                        token = data.token,
+                        userId = data?.userId,
+                        userName = data?.name,
+                        token = data?.token,
                         isLogin = true
                     )
                     viewModel.saveSession(user)
@@ -57,9 +69,14 @@ class LoginActivity : AppCompatActivity() {
 
                 is Result.Error -> {
                     showLoading(false)
+                    showToast(result.error)
                 }
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun showLoading(isLoading: Boolean) {

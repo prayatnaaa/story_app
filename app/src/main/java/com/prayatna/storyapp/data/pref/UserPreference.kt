@@ -1,7 +1,6 @@
 package com.prayatna.storyapp.data.pref
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -34,10 +33,6 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
             preferences[TOKEN_KEY] = user.token!!
             preferences[IS_LOGIN_KEY] = user.isLogin
         }
-        Log.d(
-            "TokenLogin",
-            "isLogin: ${user.isLogin}; email: ${user.userId}; password: ${user.userName}; token: ${user.token}"
-        )
     }
 
     suspend fun logout() {

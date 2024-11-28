@@ -1,10 +1,13 @@
 package com.prayatna.storyapp.ui.settings
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.prayatna.storyapp.R
@@ -21,8 +24,7 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
@@ -32,6 +34,11 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAction()
         setupUser()
+        setupView()
+    }
+
+    private fun setupView() {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.settings)
     }
 
     private fun setupUser() {
@@ -45,18 +52,18 @@ class SettingsFragment : Fragment() {
         binding.btnLogout.setOnClickListener {
             logout()
         }
+        binding.settingsLocale.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+        }
     }
 
     private fun logout() {
         AlertDialog.Builder(requireContext()).apply {
             setTitle(getString(R.string.logout))
             setMessage(getString(R.string.confirmation_message))
-        }
-            .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                viewModel.logout()
-            }
-            .setNegativeButton(getString(R.string.no)) { _, _ -> }
-            .show()
+        }.setPositiveButton(getString(R.string.yes)) { _, _ ->
+            viewModel.logout()
+        }.setNegativeButton(getString(R.string.no)) { _, _ -> }.show()
     }
 
     override fun onDestroy() {
