@@ -26,4 +26,11 @@
     <string name="name">Name</string>
     <string name="has_account">Already have account?</string>
     <string name="has_no_account">Register</string>
+    <string name="enter_email">Enter your email here</string>
+    <string name="email_required">Email Required</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="appwidget_text">STORY LIST</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="empty_text">Empty</string>
 </resources>

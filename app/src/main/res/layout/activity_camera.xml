@@ -51,17 +51,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintTop_toTopOf="@+id/capturePicture"
-        android:src="@drawable/ic_gallery"
-        app:layout_constraintEnd_toStartOf="@+id/capturePicture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/capturePicture"
-        android:id="@+id/openGallery"
-        app:layout_constraintHorizontal_bias="0.1"
-        />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

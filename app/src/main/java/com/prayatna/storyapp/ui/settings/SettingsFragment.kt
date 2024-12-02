@@ -1,7 +1,9 @@
 package com.prayatna.storyapp.ui.settings
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +46,9 @@ class SettingsFragment : Fragment() {
     private fun setupAction() {
         binding.btnLogout.setOnClickListener {
             logout()
+        }
+        binding.btnChooseLanguage.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
         }
     }
 

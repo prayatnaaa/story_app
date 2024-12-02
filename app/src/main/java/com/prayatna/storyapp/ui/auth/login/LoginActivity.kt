@@ -1,5 +1,6 @@
 package com.prayatna.storyapp.ui.auth.login
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -32,7 +33,16 @@ class LoginActivity : AppCompatActivity() {
         setupAction()
         setupView()
         setupResult()
+        setupAnimation()
 
+    }
+
+    private fun setupAnimation() {
+        ObjectAnimator.ofFloat(binding.tvWelcome, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
     }
 
     private fun setupResult() {

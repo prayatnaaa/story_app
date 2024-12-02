@@ -4,22 +4,19 @@ import android.content.Context
 import com.prayatna.storyapp.data.pref.UserPreference
 import com.prayatna.storyapp.data.pref.dataStore
 import com.prayatna.storyapp.data.remote.retrofit.ApiConfig
-import com.prayatna.storyapp.data.repository.UserRepository
 import com.prayatna.storyapp.data.repository.AuthRepository
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import com.prayatna.storyapp.data.repository.UserRepository
 
 object Injection {
     fun getInstance(context: Context) : AuthRepository {
         val pref = UserPreference.getInstance(context.dataStore)
-        val userToken = runBlocking { pref.getSession().first() }
-        val apiService = ApiConfig.getInstance(userToken.token!!)
+        val apiService = ApiConfig.getInstance()
         return AuthRepository.getInstance(apiService, pref)
     }
 
     fun storyRepoInstance(context: Context) : UserRepository {
-        val userToken = runBlocking { UserPreference.getInstance(context.dataStore).getSession().first() }
-        val apiService = ApiConfig.getInstance(userToken.token!!)
-        return UserRepository.getInstance(apiService)
+        val apiService = ApiConfig.getInstance()
+        val pref = UserPreference.getInstance(context.dataStore)
+        return UserRepository.getInstance(apiService, pref)
     }
 }

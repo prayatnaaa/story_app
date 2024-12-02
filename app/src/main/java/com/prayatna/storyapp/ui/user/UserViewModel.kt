@@ -3,6 +3,7 @@ package com.prayatna.storyapp.ui.user
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.prayatna.storyapp.data.remote.response.AddResponse
 import com.prayatna.storyapp.data.repository.UserRepository
@@ -16,11 +17,13 @@ class UserViewModel(private var repository: UserRepository) : ViewModel() {
 
     var currentImageUri: Uri? = null
 
-    fun getStories(location: String) = repository.getStories(location)
-    fun getDetailStoryById(id: String) = repository.getDetailStoryById(id)
-    fun addStory(image: File, description: String) {
+    fun getSession() = repository.getSession().asLiveData()
+    fun getStories(location: String, token: String) = repository.getStories(location, token)
+    fun getDetailStoryById(id: String, token: String) = repository.getDetailStoryById(id, token)
+    fun addStory(image: File, description: String, token: String) {
+        _story.value = Result.Loading
         viewModelScope.launch{
-            _story.value = repository.addStory(image, description)
+            _story.value = repository.addStory(image, description, token)
         }
     }
 }

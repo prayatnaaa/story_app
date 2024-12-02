@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplikasi Cerita</string>
+    <string name="enter_password">Masukkan kata sandi</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email">Email</string>
+    <string name="welcome">Selamat Datang</string>
+    <string name="login">Masuk</string>
+    <string name="forget_password">Lupa kata sandi?</string>
+    <string name="logout">Keluar</string>
+    <string name="home">Beranda</string>
+    <string name="settings">Pengaturan</string>
+    <string name="username">Tude Prayatna</string>
+    <string name="userEmail">tude@gmail.com</string>
+    <string name="general">Umum</string>
+    <string name="choose_language">Pilih Bahasa</string>
+    <string name="dark_mode">Mode Gelap</string>
+    <string name="confirmation_message">Apakah Anda yakin?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="cancel">Batal</string>
+    <string name="enter_your_description_here">Masukkan deskripsi Anda di sini…</string>
+    <string name="upload">Unggah</string>
+    <string name="enter_your_title_here">Masukkan judul Anda di sini…</string>
+    <string name="back">Kembali</string>
+    <string name="register">Daftar</string>
+    <string name="name">Nama</string>
+    <string name="has_account">Sudah memiliki akun?</string>
+    <string name="has_no_account">Daftar</string>
+    <string name="enter_email">Masukkan email Anda di sini</string>
+    <string name="email_required">Email Diperlukan</string>
+    <string name="invalid_email">Email Tidak Valid</string>
+    <string name="empty_text">Kosong</string>
+    <string name="appwidget_text">DAFTAR CERITA</string>
+    <string name="add_widget">Tambah Widget</string>
+    <string name="app_widget_description">Ini adalah deskripsi widget</string>
+</resources>

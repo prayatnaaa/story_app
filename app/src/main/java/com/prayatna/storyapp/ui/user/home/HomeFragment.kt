@@ -1,10 +1,10 @@
 package com.prayatna.storyapp.ui.user.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,27 +41,33 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupAction() {
-        viewModel.getStories("0").observe(viewLifecycleOwner) { stories ->
-            if (stories != null) {
-                when (stories) {
-                    is Result.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                        Log.d("HomeFragment", "Loading")
-                    }
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+            viewModel.getStories("0", user.token!!).observe(viewLifecycleOwner) { stories ->
+                if (stories != null) {
+                    when (stories) {
+                        is Result.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
 
-                    is Result.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        Log.e("HomeFragment", stories.error)
-                    }
-                    is Result.Success -> {
-                        binding.progressBar.visibility = View.GONE
-                        val data = stories.data.listStory
-                        Log.d("HomeFragment", data.toString())
-                        adapter?.submitList(data)
+                        is Result.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            showError(stories.error)
+                        }
+
+                        is Result.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            val data = stories.data.listStory
+                            adapter?.submitList(data)
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(requireActivity(), message,Toast.LENGTH_SHORT).show()
+        binding.errorImage.visibility = View.VISIBLE
     }
 
     private fun setupAdapter() {
@@ -74,5 +80,10 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupAction()
     }
 }

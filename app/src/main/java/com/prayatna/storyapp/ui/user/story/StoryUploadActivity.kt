@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -60,11 +59,9 @@ class StoryUploadActivity : AppCompatActivity() {
             requestPermission.launch(REQUIRED_PERMISSION)
         }
 
-        Log.d("ImageUri", "StoryUpload: uri: ${viewModel.currentImageUri}")
-
         setupAction()
         setupUI()
-        setupObserver()
+        setupViewModel()
         setupGalleryFromCameraResult()
     }
 
@@ -75,21 +72,34 @@ class StoryUploadActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupObserver() {
+    private fun setupViewModel() {
         viewModel.story.observe(this) { result ->
             if (result != null) {
                 when(result) {
-                    is Result.Loading -> { Log.d("StoryUploadActivity", "Loading")}
+                    is Result.Loading -> {
+                       showLoading(true)
+                    }
                     is Result.Error -> {
-                        Log.d("StoryUploadActivity", result.error)
+                        showLoading(false)
+                        showToast(result.error)
                     }
                     is Result.Success -> {
-                        Log.d("StoryUploadActivity", "${result.data.message}: ${result.data.error}")
+                        showLoading(false)
+                        showToast(result.data.message!!)
+                        finish()
                     }
                 }
             }
 
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupUI() {
@@ -123,8 +133,6 @@ class StoryUploadActivity : AppCompatActivity() {
         if (uri != null) {
             viewModel.currentImageUri = uri
             showImage()
-        } else {
-            Log.d("Photo Picker", "No media selected")
         }
     }
 
@@ -158,9 +166,11 @@ class StoryUploadActivity : AppCompatActivity() {
 
     private fun upload() {
        viewModel.currentImageUri?.let { uri->
-           val imageFile = uriToFile(uri, this).reduceFileImage()
-           val description = binding.editTextDescription.text
-           viewModel.addStory(imageFile, description.toString())
+           viewModel.getSession().observe(this) { user ->
+               val imageFile = uriToFile(uri, this).reduceFileImage()
+               val description = binding.editTextDescription.text
+               viewModel.addStory(imageFile, description.toString(), user.token!!)
+           }
        }
     }
 
