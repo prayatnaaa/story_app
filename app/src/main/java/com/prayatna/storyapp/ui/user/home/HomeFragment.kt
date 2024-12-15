@@ -16,7 +16,7 @@ import com.prayatna.storyapp.ui.user.UserViewModel
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: UserViewModel by viewModels{
+    private val viewModel: UserViewModel by viewModels {
         UserViewModelFactory.getInstance(requireContext())
     }
 
@@ -41,24 +41,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupAction() {
-        viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            viewModel.getStories("0", user.token!!).observe(viewLifecycleOwner) { stories ->
-                if (stories != null) {
-                    when (stories) {
-                        is Result.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
+        viewModel.getStories("0").observe(viewLifecycleOwner) { stories ->
+            if (stories != null) {
+                when (stories) {
+                    is Result.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
 
-                        is Result.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            showError(stories.error)
-                        }
+                    is Result.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        showError(stories.error)
+                    }
 
-                        is Result.Success -> {
-                            binding.progressBar.visibility = View.GONE
-                            val data = stories.data.listStory
-                            adapter?.submitList(data)
-                        }
+                    is Result.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        val data = stories.data.listStory
+                        adapter?.submitList(data)
                     }
                 }
             }
@@ -66,7 +64,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showError(message: String) {
-        Toast.makeText(requireActivity(), message,Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
         binding.errorImage.visibility = View.VISIBLE
     }
 

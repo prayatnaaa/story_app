@@ -24,14 +24,14 @@ import java.io.File
 
 class UserRepository private constructor(private val apiService: ApiService, private val userPref: UserPreference) {
 
-    private val getToken = runBlocking { userPref.getSession().first().token }
+    private val token = runBlocking { userPref.getSession().first().token }
 
     fun getSession(): Flow<UserModel> {
         return userPref.getSession()
     }
 
 
-    fun getStories(location: String, token: String): LiveData<Result<GetStoryResponse>> =
+    fun getStories(location: String): LiveData<Result<GetStoryResponse>> =
         liveData {
             emit(Result.Loading)
             try {
@@ -47,7 +47,7 @@ class UserRepository private constructor(private val apiService: ApiService, pri
             }
         }
 
-    fun getDetailStoryById(id: String, token: String): LiveData<Result<GetDetailStoryResponse>> =
+    fun getDetailStoryById(id: String): LiveData<Result<GetDetailStoryResponse>> =
         liveData {
             emit(Result.Loading)
             try {
@@ -65,7 +65,7 @@ class UserRepository private constructor(private val apiService: ApiService, pri
             }
         }
 
-    suspend fun addStory(image: File, description: String, token: String): Result<AddResponse> {
+    suspend fun addStory(image: File, description: String): Result<AddResponse> {
         return try {
             val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImage = image.asRequestBody("image/jpeg".toMediaType())

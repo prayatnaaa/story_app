@@ -4,20 +4,25 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.gson.Gson
+import com.prayatna.storyapp.data.pref.UserPreference
 import com.prayatna.storyapp.data.remote.response.ErrorResponse
 import com.prayatna.storyapp.data.remote.response.GetDetailStoryResponse
 import com.prayatna.storyapp.data.remote.response.GetStoryResponse
 import com.prayatna.storyapp.data.remote.retrofit.ApiService
 import com.prayatna.storyapp.helper.Result
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 
-class StoryRepository private constructor(private val apiService: ApiService) {
+class StoryRepository private constructor(private val apiService: ApiService, pref: UserPreference) {
+
+    private val token = runBlocking { pref.getSession().first().token }
 
     fun getStories(location: String): LiveData<Result<GetStoryResponse>> =
         liveData {
             emit(Result.Loading)
             try {
-                val getStories = apiService.getStories(location)
+                val getStories = apiService.getStories(location, "Bearer $token")
                 Log.d("StoryList", getStories.toString())
                 emit(Result.Success(getStories))
             } catch (e: HttpException) {
@@ -36,7 +41,7 @@ class StoryRepository private constructor(private val apiService: ApiService) {
         liveData {
             emit(Result.Loading)
             try {
-                val detailStory = apiService.getDetailStoryById(id)
+                val detailStory = apiService.getDetailStoryById(id, "Header $token")
                 emit(Result.Success(detailStory))
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
@@ -53,9 +58,9 @@ class StoryRepository private constructor(private val apiService: ApiService) {
     companion object {
         @Volatile
         private var INSTANCE: StoryRepository? = null
-        fun getInstance(apiService: ApiService): StoryRepository {
+        fun getInstance(apiService: ApiService, pref: UserPreference): StoryRepository {
             return INSTANCE ?: synchronized(this) {
-                val instance = StoryRepository(apiService)
+                val instance = StoryRepository(apiService, pref)
                 INSTANCE = instance
                 instance
             }

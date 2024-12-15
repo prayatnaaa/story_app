@@ -75,14 +75,16 @@ class StoryUploadActivity : AppCompatActivity() {
     private fun setupViewModel() {
         viewModel.story.observe(this) { result ->
             if (result != null) {
-                when(result) {
+                when (result) {
                     is Result.Loading -> {
-                       showLoading(true)
+                        showLoading(true)
                     }
+
                     is Result.Error -> {
                         showLoading(false)
                         showToast(result.error)
                     }
+
                     is Result.Success -> {
                         showLoading(false)
                         showToast(result.data.message!!)
@@ -95,7 +97,8 @@ class StoryUploadActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+        binding.progressBar.visibility =
+            if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
     }
 
     private fun showToast(message: String) {
@@ -108,11 +111,12 @@ class StoryUploadActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -144,7 +148,12 @@ class StoryUploadActivity : AppCompatActivity() {
             Glide.with(binding.cameraResultImage.context).load(currentImageUri)
                 .transform(BlurTransformation(25, 25)).into(binding.blurredBackground)
         } else {
-            binding.cameraResultImage.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_gallery))
+            binding.cameraResultImage.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    this,
+                    R.drawable.ic_gallery
+                )
+            )
         }
     }
 
@@ -157,7 +166,8 @@ class StoryUploadActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == CAMERAX_RESULT) {
-            viewModel.currentImageUri = it.data?.getStringExtra(CameraActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
+            viewModel.currentImageUri =
+                it.data?.getStringExtra(CameraActivity.EXTRA_CAMERAX_IMAGE)?.toUri()
             showImage()
         } else {
             setupGalleryFromCameraResult()
@@ -165,13 +175,11 @@ class StoryUploadActivity : AppCompatActivity() {
     }
 
     private fun upload() {
-       viewModel.currentImageUri?.let { uri->
-           viewModel.getSession().observe(this) { user ->
-               val imageFile = uriToFile(uri, this).reduceFileImage()
-               val description = binding.editTextDescription.text
-               viewModel.addStory(imageFile, description.toString(), user.token!!)
-           }
-       }
+        viewModel.currentImageUri?.let { uri ->
+            val imageFile = uriToFile(uri, this).reduceFileImage()
+            val description = binding.editTextDescription.text
+            viewModel.addStory(imageFile, description.toString())
+        }
     }
 
     companion object {

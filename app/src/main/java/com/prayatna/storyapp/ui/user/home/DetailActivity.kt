@@ -29,29 +29,27 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        viewModel.getSession().observe(this) { user ->
-            val id = intent.getStringExtra(EXTRA_ID)
-            if (id != null) {
-                viewModel.getDetailStoryById(id, user.token!!).observe(this) { result ->
-                    when (result) {
-                        is Result.Error -> {
-                            Log.e("DetailActivity", result.error)
-                        }
+        val id = intent.getStringExtra(EXTRA_ID)
+        if (id != null) {
+            viewModel.getDetailStoryById(id).observe(this) { result ->
+                when (result) {
+                    is Result.Error -> {
+                        Log.e("DetailActivity", result.error)
+                    }
 
-                        is Result.Loading -> {
-                            Log.d("DetailActivity", "Loading")
-                        }
+                    is Result.Loading -> {
+                        Log.d("DetailActivity", "Loading")
+                    }
 
-                        is Result.Success -> {
-                            val data = result.data.story!!
-                            binding.tvTitle.text = data.name
-                            binding.tvDescription.text = data.description
-                            Glide.with(binding.storyImage.context).load(data.photoUrl)
-                                .into(binding.storyImage)
-                            Glide.with(binding.blurredBackground.context).load(data.photoUrl)
-                                .transform(BlurTransformation(25, 25))
-                                .into(binding.blurredBackground)
-                        }
+                    is Result.Success -> {
+                        val data = result.data.story!!
+                        binding.tvTitle.text = data.name
+                        binding.tvDescription.text = data.description
+                        Glide.with(binding.storyImage.context).load(data.photoUrl)
+                            .into(binding.storyImage)
+                        Glide.with(binding.blurredBackground.context).load(data.photoUrl)
+                            .transform(BlurTransformation(25, 25))
+                            .into(binding.blurredBackground)
                     }
                 }
             }
