@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.prayatna.storyapp.data.source.UserModel
@@ -67,6 +68,7 @@ class LoginActivity : AppCompatActivity() {
 
                 is Result.Error -> {
                     showLoading(false)
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
                 }
             }
         }

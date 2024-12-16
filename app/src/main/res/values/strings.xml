@@ -33,4 +33,9 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
     <string name="empty_text">Empty</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="normal_type">Normal Type</string>
+    <string name="satellite_type">Satellite Type</string>
+    <string name="terrain_type">Terrain Type</string>
+    <string name="hybrid_type">Hybrid Type</string>
 </resources>

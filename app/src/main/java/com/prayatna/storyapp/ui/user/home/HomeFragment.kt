@@ -1,5 +1,6 @@
 package com.prayatna.storyapp.ui.user.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.prayatna.storyapp.databinding.FragmentHomeBinding
 import com.prayatna.storyapp.helper.Result
 import com.prayatna.storyapp.ui.UserViewModelFactory
 import com.prayatna.storyapp.ui.adapter.HomeAdapter
+import com.prayatna.storyapp.ui.maps.MapsActivity
 import com.prayatna.storyapp.ui.user.UserViewModel
 
 class HomeFragment : Fragment() {
@@ -37,10 +39,22 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupAdapter()
+        setupViewModel()
         setupAction()
     }
 
     private fun setupAction() {
+        mapsIntent()
+    }
+
+    private fun mapsIntent() {
+        binding.btnMaps.setOnClickListener {
+            val intent = Intent(requireActivity(), MapsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setupViewModel() {
         viewModel.getStories("0").observe(viewLifecycleOwner) { stories ->
             if (stories != null) {
                 when (stories) {

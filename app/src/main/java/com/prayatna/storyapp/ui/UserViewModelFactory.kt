@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.prayatna.storyapp.data.di.Injection
 import com.prayatna.storyapp.data.repository.UserRepository
+import com.prayatna.storyapp.ui.maps.MapsViewModel
 import com.prayatna.storyapp.ui.user.UserViewModel
 
 class UserViewModelFactory private constructor(private val userRepository: UserRepository): ViewModelProvider.NewInstanceFactory() {
@@ -14,6 +15,9 @@ class UserViewModelFactory private constructor(private val userRepository: UserR
         return when {
             modelClass.isAssignableFrom(UserViewModel::class.java) -> {
              UserViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(userRepository) as T
             }
 
             else -> {
