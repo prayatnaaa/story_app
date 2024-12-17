@@ -2,7 +2,6 @@ package com.prayatna.storyapp.ui.user.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.prayatna.storyapp.databinding.FragmentHomeBinding
 import com.prayatna.storyapp.ui.UserViewModelFactory
 import com.prayatna.storyapp.ui.adapter.HomeAdapter
+import com.prayatna.storyapp.ui.adapter.LoadingStateAdapter
 import com.prayatna.storyapp.ui.maps.MapsActivity
 import com.prayatna.storyapp.ui.user.UserViewModel
 
@@ -46,12 +46,14 @@ class HomeFragment : Fragment() {
     private fun getData() {
         val newAdapter = HomeAdapter()
         binding.progressBar.visibility = View.GONE
-        binding.recyclerView.adapter = newAdapter
+        binding.recyclerView.adapter = newAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                newAdapter.retry()
+            }
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         viewModel.stories.observe(viewLifecycleOwner) {
             newAdapter.submitData(lifecycle, it)
-            Log.d("HomeFragment", "$it")
-            Log.d("HomeFragment", "hit")
         }
     }
 
@@ -106,8 +108,8 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupAction()
+    override fun onStart() {
+        super.onStart()
+        getData()
     }
 }
