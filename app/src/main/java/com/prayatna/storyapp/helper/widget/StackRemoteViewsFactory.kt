@@ -38,21 +38,19 @@ class StackRemoteViewsFactory(private val context: Context) : RemoteViewsService
             Log.d("WidgetStory", "Token retrieved: $token")
 
             try {
-                val response = apiService.getStories("0", token!!)
-                Log.d("WidgetStory", "API response: ${response.listStory}")
+                val response = apiService.getStories(token!!, 0, 1, 5)
+                Log.d("WidgetStory", "API response: $response")
 
                 response.listStory?.take(5)?.forEach { image ->
                     Log.d("WidgetStory", "Processing image: ${image?.photoUrl}")
 
-                    if (image != null) {
-                        val bitmap = downloadBitmap(image.photoUrl)
-                        if (bitmap != null) {
-                            Log.d("WidgetStory", "Bitmap downloaded for image: ${image.photoUrl}")
-                            mWidgetItems.add(image)
-                            mWidgetBitmap.add(bitmap)
-                        } else {
-                            Log.e("WidgetStory", "Bitmap download failed for: ${image.photoUrl}")
-                        }
+                    val bitmap = downloadBitmap(image!!.photoUrl)
+                    if (bitmap != null) {
+                        Log.d("WidgetStory", "Bitmap downloaded for image: ${image.photoUrl}")
+                        mWidgetItems.add(image)
+                        mWidgetBitmap.add(bitmap)
+                    } else {
+                        Log.e("WidgetStory", "Bitmap download failed for: ${image.photoUrl}")
                     }
                 }
             } catch (e: Exception) {

@@ -3,12 +3,19 @@ package com.prayatna.storyapp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.google.gson.Gson
+import com.prayatna.storyapp.data.local.paging.StoryPagingSource
+import com.prayatna.storyapp.data.local.room.StoryDatabase
 import com.prayatna.storyapp.data.pref.UserPreference
 import com.prayatna.storyapp.data.remote.response.AddResponse
 import com.prayatna.storyapp.data.remote.response.ErrorResponse
 import com.prayatna.storyapp.data.remote.response.GetDetailStoryResponse
 import com.prayatna.storyapp.data.remote.response.GetStoryResponse
+import com.prayatna.storyapp.data.remote.response.ListStory
 import com.prayatna.storyapp.data.remote.retrofit.ApiService
 import com.prayatna.storyapp.helper.Result
 import kotlinx.coroutines.flow.first
@@ -22,36 +29,41 @@ import java.io.File
 
 class UserRepository private constructor(
     private val apiService: ApiService,
-    private val userPref: UserPreference
+    private val userPref: UserPreference,
+    private val database: StoryDatabase
 ) {
 
     private val token = runBlocking { userPref.getSession().first().token }
 
-    fun getStories(location: String): LiveData<Result<GetStoryResponse>> =
-        liveData {
-            emit(Result.Loading)
-            try {
-                val getStories = apiService.getStories(location = location, token = "Bearer $token")
-                emit(Result.Success(getStories))
-                Log.d("okhttp", "getStories: $getStories")
-            } catch (e: HttpException) {
-                val jsonInString = e.response()?.errorBody()?.string()
-                val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-                val errorMessage = errorBody.message
-                Log.e("okhttp", "error getStories: $errorMessage")
-                Log.e("okhttp", "token: $token")
-                emit(Result.Error(errorMessage!!))
-            } catch (e: Exception) {
-                Log.e("okhttp", "${e.message}")
-                emit(Result.Error(e.message.toString()))
-            }
+    fun getStories(): LiveData<Result<List<ListStory>>> {
+        return liveData {
+            Pager(
+                config = PagingConfig(
+                    pageSize = 5
+                ),
+                pagingSourceFactory = {
+                    StoryPagingSource(apiService, userPref)
+                }
+            )
         }
+    }
+
+    fun getStory(): LiveData<PagingData<ListStory>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService, userPref)
+            }
+        ).liveData
+    }
 
     fun getDetailStoryById(id: String): LiveData<Result<GetDetailStoryResponse>> =
         liveData {
             emit(Result.Loading)
             try {
-                val detailStory = apiService.getDetailStoryById(id, "Bearer $token")
+                val detailStory = apiService.getDetailStoryById("Bearer $token", id)
                 emit(Result.Success(detailStory))
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
@@ -108,9 +120,9 @@ class UserRepository private constructor(
     companion object {
         @Volatile
         private var INSTANCE: UserRepository? = null
-        fun getInstance(apiService: ApiService, userPref: UserPreference): UserRepository {
+        fun getInstance(apiService: ApiService, userPref: UserPreference, database: StoryDatabase): UserRepository {
             return INSTANCE ?: synchronized(this) {
-                val instance = UserRepository(apiService, userPref)
+                val instance = UserRepository(apiService, userPref, database)
                 INSTANCE = instance
                 instance
             }

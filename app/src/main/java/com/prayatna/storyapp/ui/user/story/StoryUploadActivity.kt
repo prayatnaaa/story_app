@@ -63,6 +63,11 @@ class StoryUploadActivity : AppCompatActivity() {
         setupUI()
         setupViewModel()
         setupGalleryFromCameraResult()
+        setupLocation()
+    }
+
+    private fun setupLocation() {
+        TODO("Not yet implemented")
     }
 
     private fun setupGalleryFromCameraResult() {

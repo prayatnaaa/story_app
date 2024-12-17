@@ -84,4 +84,9 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
 
     implementation(libs.androidx.exifinterface)
+
+    implementation(libs.play.services.maps.v1820)
+    implementation(libs.play.services.location)
+
+    implementation(libs.androidx.paging.runtime.ktx)
 }

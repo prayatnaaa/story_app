@@ -1,9 +1,10 @@
 package com.prayatna.storyapp.ui.adapter
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.prayatna.storyapp.data.remote.response.ListStory
@@ -11,13 +12,13 @@ import com.prayatna.storyapp.databinding.StoryItemBinding
 import com.prayatna.storyapp.helper.StoryDiffCallback
 import com.prayatna.storyapp.ui.user.home.DetailActivity
 
-class HomeAdapter : ListAdapter<ListStory, HomeAdapter.ViewHolder>(StoryDiffCallback) {
+class HomeAdapter : PagingDataAdapter<ListStory, HomeAdapter.ViewHolder>(StoryDiffCallback) {
     class ViewHolder(private val binding: StoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(story: ListStory) {
             binding.tvTitle.text = story.name
             binding.tvDescription.text = story.description
-            Glide.with(binding.storyImage.context).load(story.photoUrl!!).into(binding.storyImage)
+            Glide.with(binding.storyImage.context).load(story.photoUrl).into(binding.storyImage)
         }
     }
 
@@ -29,11 +30,16 @@ class HomeAdapter : ListAdapter<ListStory, HomeAdapter.ViewHolder>(StoryDiffCall
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val story = getItem(position)
-        holder.bind(story)
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_ID, story.id)
-            holder.itemView.context.startActivity(intent)
+        if (story != null) {
+            holder.bind(story)
+            holder.itemView.setOnClickListener {
+                val intent = Intent(holder.itemView.context, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_ID, story.id)
+                holder.itemView.context.startActivity(intent)
+            }
+            Log.d("okhttp", "adapter: $story")
+        } else {
+            Log.d("okhttp", "Story is null at position: $position")
         }
     }
 

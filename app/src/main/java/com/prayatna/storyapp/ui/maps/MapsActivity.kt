@@ -1,13 +1,16 @@
 package com.prayatna.storyapp.ui.maps
 
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,12 +30,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val viewModel: MapsViewModel by viewModels {
         UserViewModelFactory.getInstance(this)
     }
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -72,23 +78,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             poiMarker?.showInfoWindow()
         }
 
-        getMyLocation()
         trackStoriesLocation()
+//        getMyLocation()
     }
 
     private fun trackStoriesLocation() {
         viewModel.getStoriesLocation().observe(this) { data ->
             when (data) {
-                is Result.Error -> {}
+                is Result.Error -> {
+                    Log.e("okhttp", "$data")
+                }
                 Result.Loading -> {}
                 is Result.Success -> {
                     val location = data.data.listStory
-                    location!!.forEach { loc ->
+                    Log.d("okhttp", "stories w loc: ${location?.size}")
+                    location?.forEach { loc ->
                         val latLng = LatLng(loc!!.lat as Double, loc.lon as Double)
-                        mMap.addMarker(MarkerOptions()
-                            .position(latLng)
-                            .title(loc.name)
-                            .snippet(loc.description)
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(latLng)
+                                .title(loc.name)
+                                .snippet(loc.description)
                         )
                     }
                 }
@@ -129,24 +139,90 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                getMyLocation()
-            }
-        }
+//    private val requestBackgroundLocationPermissionLauncher =
+//        registerForActivityResult(
+//            ActivityResultContracts.RequestPermission()
+//        ) { isGranted ->
+//            if (isGranted) {
+//                getMyLocation()
+//            }
+//        }
 
-    private fun getMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            mMap.isMyLocationEnabled = true
-        } else {
-            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_COARSE_LOCATION)
-        }
+    private val runningQOrLater = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+//    @TargetApi(Build.VERSION_CODES.Q)
+//    private val requestLocationPermissionLauncher =
+//        registerForActivityResult(
+//            ActivityResultContracts.RequestPermission()
+//        ) { isGranted: Boolean ->
+//            if (isGranted) {
+//                if (runningQOrLater) {
+//                    requestBackgroundLocationPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+//                } else {
+//                    getMyLocation()
+//                }
+//            }
+//        }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+//    private val requestPermissionLauncher =
+//        registerForActivityResult(
+//            ActivityResultContracts.RequestMultiplePermissions()
+//        ) { permissions ->
+//            when {
+//                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+//                    getMyLocation()
+//                }
+//                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+//                    getMyLocation()
+//                }
+//                else -> {
+//
+//                }
+//            }
+//        }
+
+//    private fun getMyLocation() {
+//        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+//            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//
+//            fusedLocationClient.lastLocation.addOnSuccessListener { location: android.location.Location? ->
+//                if (location != null) {
+//                    showStartMarker(location)
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 17f))
+//                } else {
+//                    Toast.makeText(
+//                        this@MapsActivity,
+//                        "Location is not found. Try Again",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//
+//                }
+//            }
+//
+//        } else {
+//            requestPermissionLauncher.launch(
+//                arrayOf(
+//                    Manifest.permission.ACCESS_FINE_LOCATION,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION
+//                )
+//            )
+//        }
+//    }
+
+    private fun showStartMarker(location: android.location.Location) {
+        val startLocation = LatLng(location.latitude, location.longitude)
+        mMap.addMarker(
+            MarkerOptions()
+                .position(startLocation)
+                .title("Tester")
+        )
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
     }
 }

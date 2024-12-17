@@ -2,6 +2,7 @@ package com.prayatna.storyapp.ui.user.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prayatna.storyapp.databinding.FragmentHomeBinding
-import com.prayatna.storyapp.helper.Result
 import com.prayatna.storyapp.ui.UserViewModelFactory
 import com.prayatna.storyapp.ui.adapter.HomeAdapter
 import com.prayatna.storyapp.ui.maps.MapsActivity
@@ -22,7 +22,7 @@ class HomeFragment : Fragment() {
         UserViewModelFactory.getInstance(requireContext())
     }
 
-    private var adapter: HomeAdapter? = null
+//    private var adapter: HomeAdapter? = null
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -38,9 +38,21 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupAdapter()
-        setupViewModel()
+//        setupViewModel()
         setupAction()
+        getData()
+    }
+
+    private fun getData() {
+        val newAdapter = HomeAdapter()
+        binding.progressBar.visibility = View.GONE
+        binding.recyclerView.adapter = newAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        viewModel.stories.observe(viewLifecycleOwner) {
+            newAdapter.submitData(lifecycle, it)
+            Log.d("HomeFragment", "$it")
+            Log.d("HomeFragment", "hit")
+        }
     }
 
     private fun setupAction() {
@@ -55,26 +67,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        viewModel.getStories("0").observe(viewLifecycleOwner) { stories ->
-            if (stories != null) {
-                when (stories) {
-                    is Result.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
-
-                    is Result.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        showError(stories.error)
-                    }
-
-                    is Result.Success -> {
-                        binding.progressBar.visibility = View.GONE
-                        val data = stories.data.listStory
-                        adapter?.submitList(data)
-                    }
-                }
-            }
-        }
+//        viewModel.getStories().observe(viewLifecycleOwner) { stories ->
+//            if (stories != null) {
+//                when (stories) {
+//                    is Result.Loading -> {
+//                        binding.progressBar.visibility = View.VISIBLE
+//                    }
+//
+//                    is Result.Error -> {
+//                        binding.progressBar.visibility = View.GONE
+//                        showError(stories.error)
+//                    }
+//
+//                    is Result.Success -> {
+//                        binding.progressBar.visibility = View.GONE
+//                        val data = stories.data
+//                        adapter?.submitList(data)
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun showError(message: String) {
@@ -82,12 +94,12 @@ class HomeFragment : Fragment() {
         binding.errorImage.visibility = View.VISIBLE
     }
 
-    private fun setupAdapter() {
-        adapter = HomeAdapter()
-        val layoutManager = LinearLayoutManager(requireActivity())
-        binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = adapter
-    }
+//    private fun setupAdapter() {
+//        adapter = HomeAdapter()
+//        val layoutManager = LinearLayoutManager(requireActivity())
+//        binding.recyclerView.layoutManager = layoutManager
+//        binding.recyclerView.adapter = adapter
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
