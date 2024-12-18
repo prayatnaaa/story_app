@@ -33,15 +33,16 @@ class DetailActivity : AppCompatActivity() {
         viewModel.getDetailStoryById(id!!).observe(this) { result ->
             when (result) {
                 is Result.Error -> {
-                    Log.e("DetailActivity", result.error)
+                    Log.e("okhttp", result.error)
                 }
 
                 is Result.Loading -> {
-                    Log.d("DetailActivity", "Loading")
+                    Log.d("okhttp", "Loading")
                 }
 
                 is Result.Success -> {
                     val data = result.data.story!!
+                    Log.d("okhttp", data.toString())
                     binding.tvTitle.text = data.name
                     binding.tvDescription.text = data.description
                     Glide.with(binding.storyImage.context).load(data.photoUrl)

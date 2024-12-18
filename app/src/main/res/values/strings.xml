@@ -39,4 +39,5 @@
     <string name="terrain_type">Terrain Type</string>
     <string name="hybrid_type">Hybrid Type</string>
     <string name="retry">Retry</string>
+    <string name="location">Location</string>
 </resources>

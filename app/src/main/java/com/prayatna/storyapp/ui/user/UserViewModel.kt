@@ -23,10 +23,10 @@ class UserViewModel(private var repository: UserRepository) : ViewModel() {
         repository.getStory().cachedIn(viewModelScope)
 
     fun getDetailStoryById(id: String) = repository.getDetailStoryById(id)
-    fun addStory(image: File, description: String) {
+    fun addStory(image: File, description: String, lat: Float, long: Float) {
         _story.value = Result.Loading
         viewModelScope.launch{
-            _story.value = repository.addStory(image, description)
+            _story.value = repository.addStory(image, description, lat, long)
         }
     }
 }

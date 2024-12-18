@@ -57,6 +57,27 @@
             app:layout_constraintTop_toBottomOf="@+id/cameraResultImage"
             app:layout_constraintVertical_bias="0.1" />
 
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/openGallery"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintTop_toBottomOf="@+id/cameraResultImage" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/btnSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tvLocation"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocation"
+            />
+
+
         <ImageView
             android:id="@+id/openCamera"
             android:layout_width="70dp"

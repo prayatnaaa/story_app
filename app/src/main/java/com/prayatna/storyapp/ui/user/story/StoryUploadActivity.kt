@@ -1,10 +1,14 @@
+@file:Suppress("DEPRECATION")
+
 package com.prayatna.storyapp.ui.user.story
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -28,6 +32,8 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 class StoryUploadActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityStoryUploadBinding
+    private var userLatitude: Double? = null
+    private var userLongitude: Double? = null
 
     private val viewModel by viewModels<UserViewModel> {
         UserViewModelFactory.getInstance(this)
@@ -83,6 +89,7 @@ class StoryUploadActivity : AppCompatActivity() {
                     is Result.Error -> {
                         showLoading(false)
                         showToast(result.error)
+                        Log.e("okhttp", "switch: ${result.error}")
                     }
 
                     is Result.Success -> {
@@ -125,6 +132,48 @@ class StoryUploadActivity : AppCompatActivity() {
         binding.btnUpload.setOnClickListener { upload() }
         binding.openCamera.setOnClickListener { openCamera() }
         binding.openGallery.setOnClickListener { openGallery() }
+        binding.btnSwitch.setOnCheckedChangeListener { _, isChecked ->
+            setupSwitch(isChecked)
+            Log.d("okhttp", "onSwitch: $userLatitude and $userLongitude")
+        }
+    }
+
+    private fun setupSwitch(isChecked: Boolean) {
+        if (isChecked) {
+            setLocation()
+        } else {
+            userLatitude = null
+            userLongitude = null
+        }
+    }
+
+    private fun setLocation() {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fetchLocation()
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Toast.makeText(
+                this,
+                "Location permission is required to fetch your location.",
+                Toast.LENGTH_SHORT
+            ).show()
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            fetchLocation()
+        } else {
+            Toast.makeText(
+                this,
+                "Location permission is required to fetch your location.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun openGallery() {
@@ -157,6 +206,45 @@ class StoryUploadActivity : AppCompatActivity() {
         }
     }
 
+
+
+    @SuppressLint("MissingPermission")
+    private fun fetchLocation() {
+        if (!isLocationEnabled()) {
+            Toast.makeText(this, "Please enable location services.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val fusedLocationClient = com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(this)
+
+        val locationRequest = com.google.android.gms.location.LocationRequest.create().apply {
+            interval = 5000
+            fastestInterval = 2000
+            priority = com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        val locationCallback = object : com.google.android.gms.location.LocationCallback() {
+            @SuppressLint("StringFormatMatches")
+            override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
+                locationResult.lastLocation?.let { location ->
+                    userLatitude = location.latitude
+                    userLongitude = location.longitude
+                } ?: run {
+                    Toast.makeText(this@StoryUploadActivity, "Unable to fetch location. Please try again.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, mainLooper)
+    }
+
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(LOCATION_SERVICE) as android.location.LocationManager
+        return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+            || locationManager.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)
+    }
+
     private fun openCamera() {
         val intent = Intent(this, CameraActivity::class.java)
         launcherCamera.launch(intent)
@@ -178,7 +266,7 @@ class StoryUploadActivity : AppCompatActivity() {
         viewModel.currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
             val description = binding.editTextDescription.text
-            viewModel.addStory(imageFile, description.toString())
+            viewModel.addStory(imageFile, description.toString(), userLatitude!!.toFloat() , userLongitude!!.toFloat())
         }
     }
 
