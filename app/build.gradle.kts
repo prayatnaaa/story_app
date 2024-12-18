@@ -39,6 +39,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "18"
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 }
 
@@ -54,6 +55,8 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.play.services.maps)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
@@ -89,4 +92,8 @@ dependencies {
     implementation(libs.play.services.location)
 
     implementation(libs.androidx.paging.runtime.ktx)
+
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    implementation(libs.androidx.room.paging)
 }

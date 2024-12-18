@@ -22,7 +22,6 @@ class UserViewModel(private var repository: UserRepository) : ViewModel() {
     val stories: LiveData<PagingData<ListStory>> =
         repository.getStory().cachedIn(viewModelScope)
 
-//    fun getStories() = repository.getStories()
     fun getDetailStoryById(id: String) = repository.getDetailStoryById(id)
     fun addStory(image: File, description: String) {
         _story.value = Result.Loading

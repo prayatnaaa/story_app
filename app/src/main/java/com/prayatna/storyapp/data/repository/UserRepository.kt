@@ -3,6 +3,7 @@ package com.prayatna.storyapp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -35,26 +36,28 @@ class UserRepository private constructor(
 
     private val token = runBlocking { userPref.getSession().first().token }
 
-    fun getStories(): LiveData<Result<List<ListStory>>> {
-        return liveData {
-            Pager(
-                config = PagingConfig(
-                    pageSize = 5
-                ),
-                pagingSourceFactory = {
-                    StoryPagingSource(apiService, userPref)
-                }
-            )
-        }
-    }
+//    fun getStories(): LiveData<Result<List<ListStory>>> {
+//        return liveData {
+//            Pager(
+//                config = PagingConfig(
+//                    pageSize = 5
+//                ),
+//                pagingSourceFactory = {
+//                    StoryPagingSource(database, apiService, userPref)
+//                }
+//            )
+//        }
+//    }
 
     fun getStory(): LiveData<PagingData<ListStory>> {
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
+            remoteMediator = StoryPagingSource(database, apiService, userPref),
             pagingSourceFactory = {
-                StoryPagingSource(apiService, userPref)
+                database.storyDao().getStories()
             }
         ).liveData
     }
