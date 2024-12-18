@@ -1,14 +1,11 @@
 package com.prayatna.storyapp.ui.maps
 
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -79,7 +76,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         trackStoriesLocation()
-//        getMyLocation()
     }
 
     private fun trackStoriesLocation() {
@@ -137,92 +133,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 super.onOptionsItemSelected(item)
             }
         }
-    }
-
-//    private val requestBackgroundLocationPermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()
-//        ) { isGranted ->
-//            if (isGranted) {
-//                getMyLocation()
-//            }
-//        }
-
-    private val runningQOrLater = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-
-//    @TargetApi(Build.VERSION_CODES.Q)
-//    private val requestLocationPermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()
-//        ) { isGranted: Boolean ->
-//            if (isGranted) {
-//                if (runningQOrLater) {
-//                    requestBackgroundLocationPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-//                } else {
-//                    getMyLocation()
-//                }
-//            }
-//        }
-
-    private fun checkPermission(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-//    private val requestPermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestMultiplePermissions()
-//        ) { permissions ->
-//            when {
-//                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-//                    getMyLocation()
-//                }
-//                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-//                    getMyLocation()
-//                }
-//                else -> {
-//
-//                }
-//            }
-//        }
-
-//    private fun getMyLocation() {
-//        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
-//            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-//
-//            fusedLocationClient.lastLocation.addOnSuccessListener { location: android.location.Location? ->
-//                if (location != null) {
-//                    showStartMarker(location)
-//                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 17f))
-//                } else {
-//                    Toast.makeText(
-//                        this@MapsActivity,
-//                        "Location is not found. Try Again",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//
-//                }
-//            }
-//
-//        } else {
-//            requestPermissionLauncher.launch(
-//                arrayOf(
-//                    Manifest.permission.ACCESS_FINE_LOCATION,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION
-//                )
-//            )
-//        }
-//    }
-
-    private fun showStartMarker(location: android.location.Location) {
-        val startLocation = LatLng(location.latitude, location.longitude)
-        mMap.addMarker(
-            MarkerOptions()
-                .position(startLocation)
-                .title("Tester")
-        )
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
     }
 }

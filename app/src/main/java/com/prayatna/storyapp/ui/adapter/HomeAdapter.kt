@@ -1,7 +1,6 @@
 package com.prayatna.storyapp.ui.adapter
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -37,9 +36,6 @@ class HomeAdapter : PagingDataAdapter<ListStory, HomeAdapter.ViewHolder>(StoryDi
                 intent.putExtra(DetailActivity.EXTRA_ID, story.id)
                 holder.itemView.context.startActivity(intent)
             }
-            Log.d("okhttp", "adapter: $story")
-        } else {
-            Log.d("okhttp", "Story is null at position: $position")
         }
     }
 
